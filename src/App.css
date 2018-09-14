@@ -12,6 +12,7 @@
 	display: grid;
 	grid-template:
 		". solar solar ." 1fr
+		"input input input input" 1fr
 		"display display display clear" 1.25fr
 		"seven eight nine add" 1fr
 		"four five six subt" 1fr
@@ -28,10 +29,16 @@
 		width: 100%;
 		height: 40%;
 	}
+
+	.input-display{
+	grid-area: input;
+	background-color: yellow;
+}
 	#display{
 		grid-area: display;
 		padding: 15px;
 		text-align: right;
+		max-width: 100%;
 	}
 
 	#seven{
