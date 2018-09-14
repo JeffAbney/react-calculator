@@ -1,28 +1,110 @@
 .App {
+	display: flex;
+	justify-content: center;
+	align-items: center;
   text-align: center;
+  background-color: grey;
+  height: 100vh;
+  width: 100vw;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+.calculator{
+	display: grid;
+	grid-template:
+		". solar solar ." 1fr
+		"display display display clear" 1.25fr
+		"seven eight nine add" 1fr
+		"four five six subt" 1fr
+		"one two three mult" 1fr
+		"zero dec equ div" 1fr
+		/ 1fr 1fr 1fr 1fr;
+
+	background-color: white;
+	width: 350px;
+	height: 500px;
+}
+	#solar-panel{
+		grid-area: solar;
+		width: 100%;
+		height: 40%;
+	}
+	#display{
+		grid-area: display;
+		padding: 15px;
+		text-align: right;
+	}
+
+	#seven{
+		grid-area: seven;
+	}
+	#eight{
+		grid-area: eight;
+	}
+	#nine{
+		grid-area: nine;
+	}
+	#four{
+		grid-area: four;
+	}
+	#five{
+		grid-area: five;
+	}
+	#six{
+		grid-area: six;
+	}
+	#one{
+		grid-area: one;
+	}
+	#two{
+		grid-area: two;
+	}
+	#three{
+		grid-area: three;
+	}
+	#zero{
+		grid-area: zero;
+	}
+	#add{
+		grid-area: add;
+	}
+	#subt{
+		grid-area: subt;
+	}
+	#mult{
+		grid-area: mult;
+	}
+	#div{
+		grid-area: div;
+	}
+	#dec{
+		grid-area: dec;
+	}
+	#equ{
+		grid-area: equ;
+	}
+	#clear{
+		grid-area: clear;
+	}
+
+.solar-panel{
+	width: 100px;
+	height: 20px;
+	background-color: blue;
 }
 
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
+.display{
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	background-color: brown;
+	font-size: 32px;
 }
 
-.App-title {
-  font-size: 1.5em;
-}
-
-.App-intro {
-  font-size: large;
-}
-
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.calc-button{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: yellow;
+	border: 1px solid black;
+	font-size: 24px;
 }
