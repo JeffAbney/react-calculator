@@ -1,17 +1,25 @@
+:root {
+	--black: #000f08;
+	--blue: #136f63;
+	--gold: #e0ca3c;
+	--red: #f34213;
+	--purple: #3e2f5b;
+}
+
 .App {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-  text-align: center;
-  background-color: grey;
-  height: 100vh;
-  width: 100vw;
+  	text-align: center;
+  	background-color: var(--black);
+  	height: 100vh;
+  	width: 100vw;
 }
 
 .calculator{
 	display: grid;
 	grid-template:
-		". solar solar ." 1fr
+		". solar solar ." .5fr
 		"input input input input" 1fr
 		"display display display clear" 1.25fr
 		"seven eight nine add" 1fr
@@ -20,20 +28,44 @@
 		"zero dec equ div" 1fr
 		/ 1fr 1fr 1fr 1fr;
 
-	background-color: white;
+	background-color: var(--blue);
 	width: 350px;
 	height: 500px;
 }
 	#solar-panel{
+		display: flex;
 		grid-area: solar;
 		width: 100%;
-		height: 40%;
+		height: 100%;
+		background-color: grey;
+	}
+
+	#solar-panel:hover{
+		cursor: pointer;
+	}
+
+	.solar-panel-line{
+		flex-grow: 1;
+		height: 100%;
+		width: 10px;
+		border: 1px dotted darkgrey;
 	}
 
 	.input-display{
-	grid-area: input;
-	background-color: yellow;
+		grid-area: input;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		background-color: var(--gold);
+		color: var(--black);
+		
 }
+	.input-display p{
+		width: 100%;
+		word-wrap: break-word;
+		font-family:'Exo', sans-serif;
+	}
+
 	#display{
 		grid-area: display;
 		padding: 15px;
@@ -74,44 +106,61 @@
 	#add{
 		grid-area: add;
 	}
-	#subt{
+	#subtract{
 		grid-area: subt;
 	}
-	#mult{
+	#multiply{
 		grid-area: mult;
 	}
-	#div{
+	#divide{
 		grid-area: div;
 	}
-	#dec{
+	#decimal{
 		grid-area: dec;
 	}
-	#equ{
+	#equals{
 		grid-area: equ;
 	}
 	#clear{
 		grid-area: clear;
+		background-color: var(--red);
 	}
-
-.solar-panel{
-	width: 100px;
-	height: 20px;
-	background-color: blue;
-}
 
 .display{
 	display: flex;
 	justify-content: flex-end;
 	align-items: center;
-	background-color: brown;
+	background-color: var(--purple);
 	font-size: 32px;
+	font-family: 'Exo', sans-serif;
 }
 
 .calc-button{
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background-color: yellow;
+	background-color: var(--blue);
 	border: 1px solid black;
+	border-right: none;
+	border-bottom: none;
 	font-size: 24px;
+	font-family: 'Rajdhani', sans-serif;
+	font-weight: bold;
+	color: var(--gold);
+}
+	.calc-button:hover{
+		cursor: pointer;
+	}
+
+/*-------Fade animation for when solar panel is being hovered over -------*/
+
+@keyframes solar-fade {
+	0% {color: rgba(0, 0, 0, 1.0);}
+	100% {color: rgba(0,0,0, 0.0);}
+}
+
+.faded {
+	animation-name: solar-fade;
+	animation-duration: 2s;
+	color:rgba(0,0,0, 0.0);
 }

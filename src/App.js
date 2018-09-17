@@ -9,12 +9,14 @@ class App extends Component {
 		this.state = {
 			display: "0",
 			input: "",
-			lastOperator: "",
+			fade: "",
 		}
 
 		this.handleNumberInput = this.handleNumberInput.bind(this);
 		this.handleOperatorInput = this.handleOperatorInput.bind(this);
 		this.handleClear = this.handleClear.bind(this);
+		this.handleSolarMouseOn = this.handleSolarMouseOn.bind(this);
+		this.handleSolarMouseOff = this.handleSolarMouseOff.bind(this);
 	}
 
 	handleNumberInput(val){
@@ -23,21 +25,56 @@ class App extends Component {
 		const operatorRegex = /[\+\-\*\/]$/;
 		const operatorCheck = operatorRegex.test(this.state.input);
 		this.setState({
-			display: operatorCheck ? val : this.state.display === "0" ? val : val !== "." ? this.state.display + val
-			        : decimalCheck ? this.state.display : this.state.display + val,
-			input: this.state.display === "0" ? val : val !== "." ? this.state.input + val
-			        : decimalCheck ? this.state.input : this.state.input + val,
+			display: operatorCheck ? 
+				val 
+				: 
+				this.state.display === "0" ?
+					val 
+					: 
+					val !== "." ? 
+						this.state.display + val
+			        	:
+			        	decimalCheck ?
+			        		this.state.display
+			        		: 
+			        		this.state.display + val,
+
+			input: this.state.input === "" ?
+				 val 
+				 : 
+				 val !== "." ?
+				 	this.state.input + val
+			        : 
+			        !decimalCheck ?
+			        	this.state.input + val
+			        	:
+			        	operatorCheck ?
+			        		this.state.input + val
+			        		:
+			        		this.state.input
+			        	
+			        	
 		})
 	}
 
 	handleOperatorInput(val){
-		const operatorRegex = /[\+\-\*\/]$/;
+		const operatorRegex = /[\+\-\*\/\.]$/;
+		const beforeOperatorRegex = /[\d]/;
+		const beforeOperatorCheck = beforeOperatorRegex.test(this.state.input);
 		const operatorCheck = operatorRegex.test(this.state.input);
-		val === "=" ? operatorCheck ? 
-		        this.setState({input: eval(this.state.input.slice(0, -1)), display: eval(this.state.input.slice(0, -1))})
-		                :this.setState({display: eval(this.state.input), input:eval(this.state.input)}) 
-		                        :operatorCheck ? this.setState({input: this.state.input.slice(0,-1).concat(val)})
-		                                :this.setState({ input: this.state.input + val});
+
+		val === "=" ?
+			operatorCheck ?
+				!beforeOperatorCheck ?
+					this.setState({input: "", display:"0"})
+					:
+		        	this.setState({input: (Math.round(eval(this.state.input.slice(0, -1))*1000000)/1000000).toString(),
+		        	       display: (Math.round(eval(this.state.input.slice(0, -1))*1000000)/1000000).toString()})
+		        :this.setState({display: (Math.round(eval(this.state.input)*1000000)/1000000).toString(), input: (Math.round(eval(this.state.input)*1000000)/1000000).toString()}) 
+		:operatorCheck ?
+		    this.setState({input: this.state.input.slice(0,-1).concat(val)})
+			:
+			this.setState({ input: this.state.input + val});
 			
 		
 	}
@@ -49,14 +86,46 @@ class App extends Component {
 		})
 	}
 
+	handleSolarMouseOn(){
+		this.setState({
+			fade: "faded",
+		})
+	}
+
+	handleSolarMouseOff(){
+		this.setState({
+			fade: "",
+		})
+	}
+
   render() {
+
+  	const displayClass = "display " + this.state.fade;
+  	const inputClass = "input-display " + this.state.fade;
     return (
       <div className="App">
         <div className="calculator">
-        	<div className="solar-panel" id="solar-panel">
+        	<div className="solar-panel" id="solar-panel" onMouseOver={()=>this.handleSolarMouseOn()} 
+        	        onMouseOut={()=>this.handleSolarMouseOff()}>
+        	<div className="solar-panel-line">
         	</div>
-        	<div className="input-display">{this.state.input}</div>
-        	<div className="display" id="display">{this.state.display}
+        	<div className="solar-panel-line">
+        	</div>
+        	<div className="solar-panel-line">
+        	</div>
+        	<div className="solar-panel-line">
+        	</div>
+        	<div className="solar-panel-line">
+        	</div>
+        	</div>
+        	<div className={inputClass}>
+        		<p>{this.state.input}</p>
+        	</div>
+        	<div className={displayClass} id="display">
+        		{this.state.display.length > 10 ?
+        	       	 		Number(this.state.display).toExponential(6) 
+        	       	 		:
+        	       	 		this.state.display}
         	</div>
         	<div className="calc-button number-button" id="seven" onClick={()=>this.handleNumberInput("7")} >7
         	</div>
@@ -78,17 +147,17 @@ class App extends Component {
         	</div>
         	<div className="calc-button number-button" id="zero" onClick={()=>this.handleNumberInput("0")} >0
         	</div>
-        	<div className="calc-button number-button" id="dec" onClick={()=>this.handleNumberInput(".")} >.
+        	<div className="calc-button number-button" id="decimal" onClick={()=>this.handleNumberInput(".")} >.
         	</div>
         	<div className="calc-button operator-button" id="add" onClick={()=>this.handleOperatorInput("+")}>+
         	</div>
-        	<div className="calc-button operator-button" id="subt" onClick={()=>this.handleOperatorInput("-")}>-
+        	<div className="calc-button operator-button" id="subtract" onClick={()=>this.handleOperatorInput("-")}>-
         	</div>
-        	<div className="calc-button operator-button" id="mult" onClick={()=>this.handleOperatorInput("*")}>*
+        	<div className="calc-button operator-button" id="multiply" onClick={()=>this.handleOperatorInput("*")}>*
         	</div>
-        	<div className="calc-button operator-button" id="div" onClick={()=>this.handleOperatorInput("/")}>/
+        	<div className="calc-button operator-button" id="divide" onClick={()=>this.handleOperatorInput("/")}>/
         	</div>
-        	<div className="calc-button operator-button" id="equ" onClick={()=>this.handleOperatorInput("=")}>=
+        	<div className="calc-button operator-button" id="equals" onClick={()=>this.handleOperatorInput("=")}>=
         	</div>
         	<div className="calc-button clear-button" id="clear" onClick={()=>this.handleClear()}>C
         	</div>
