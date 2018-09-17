@@ -62,15 +62,17 @@ class App extends Component {
 		const beforeOperatorRegex = /[\d]/;
 		const beforeOperatorCheck = beforeOperatorRegex.test(this.state.input);
 		const operatorCheck = operatorRegex.test(this.state.input);
+		const roundAndSliceToString = (Math.round(eval(this.state.input.slice(0, -1))*1000000)/1000000).toString();
 
 		val === "=" ?
 			operatorCheck ?
 				!beforeOperatorCheck ?
 					this.setState({input: "", display:"0"})
 					:
-		        	this.setState({input: (Math.round(eval(this.state.input.slice(0, -1))*1000000)/1000000).toString(),
-		        	       display: (Math.round(eval(this.state.input.slice(0, -1))*1000000)/1000000).toString()})
-		        :this.setState({display: (Math.round(eval(this.state.input)*1000000)/1000000).toString(), input: (Math.round(eval(this.state.input)*1000000)/1000000).toString()}) 
+		        	this.setState({input: roundAndSliceToString,
+		        	       display: roundAndSliceToString})
+		        :this.setState({display: roundAndSliceToString,
+		                 input: roundAndSliceToString}) 
 		:operatorCheck ?
 		    this.setState({input: this.state.input.slice(0,-1).concat(val)})
 			:
