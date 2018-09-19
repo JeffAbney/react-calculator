@@ -1,6 +1,21 @@
 import React, { Component } from 'react';
 import './App.css';
 
+const SolarPanel = (props) => {
+	    return (
+		    <div className="solar-panel" id="solar-panel" onMouseOver={props.mouseOver} onMouseOut={props.mouseOff}>
+              <div className="solar-panel-line" />
+              <div className="solar-panel-line" />
+              <div className="solar-panel-line" />
+              <div className="solar-panel-line" />
+              <div className="solar-panel-line" />
+            </div>
+	    );
+};
+
+
+
+/* ----------------------- Main App ------------------------- */
 class App extends Component {
 
     constructor(props) {
@@ -12,13 +27,25 @@ class App extends Component {
             fade: ""
         };
 
+        this.handleSolarMouseOn = this.handleSolarMouseOn.bind(this);
+        this.handleSolarMouseOff = this.handleSolarMouseOff.bind(this);
         this.handleNumberInput = this.handleNumberInput.bind(this);
         this.handleOperatorInput = this.handleOperatorInput.bind(this);
         this.handleClear = this.handleClear.bind(this);
-        this.handleSolarMouseOn = this.handleSolarMouseOn.bind(this);
-        this.handleSolarMouseOff = this.handleSolarMouseOff.bind(this);
         this.setDisplay = this.setDisplay.bind(this);
         this.setInput = this.setInput.bind(this);
+    }
+
+    handleSolarMouseOn() {
+        this.setState({
+            fade: "faded"
+        });
+    }
+
+    handleSolarMouseOff() {
+        this.setState({
+            fade: ""
+        });
     }
 
     setDisplay(val) {
@@ -28,7 +55,7 @@ class App extends Component {
         const endsInOperator = operatorRegex.test(this.state.input);
         if (endsInOperator || this.state.display === "0") {
             return val;
-        } else if (val !== "." || hasDecimal) {
+        } else if (val !== "." || !hasDecimal) {
             return this.state.display + val;
             } else {
                 return this.state.display;
@@ -58,7 +85,7 @@ class App extends Component {
     }
 
     handleOperatorInput(val) {
-        const operatorRegex = /[\+ \- \* \/ \. ]$/;
+        const operatorRegex = /[+ \- * /]$/;
         const numRegex = /[\d]/;
         const previousCharIsNum = numRegex.test(this.state.input);
         const endsInOperator = operatorRegex.test(this.state.input);
@@ -95,37 +122,14 @@ class App extends Component {
         });
     }
 
-    handleSolarMouseOn() {
-        this.setState({
-            fade: "faded"
-        });
-    }
-
-    handleSolarMouseOff() {
-        this.setState({
-            fade: ""
-        });
-    }
-
+    
     render() {
       const displayClass = "display " + this.state.fade;
       const inputClass = "input-display " + this.state.fade;
         return (
           <div className="App">
             <div className="calculator">
-              <div className="solar-panel" id="solar-panel" onMouseOver={this.handleSolarMouseOn} 
-                onMouseOut={this.handleSolarMouseOff}>
-                <div className="solar-panel-line">
-                </div>
-                <div className="solar-panel-line">
-                </div>
-                <div className="solar-panel-line">
-                </div>
-                <div className="solar-panel-line">
-                </div>
-                <div className="solar-panel-line">
-                </div>
-              </div>
+              <SolarPanel mouseOver={this.handleSolarMouseOn} mouseOff={this.handleSolarMouseOff} />
               <div className={inputClass}>
                 <p>{this.state.input}</p>
               </div>
