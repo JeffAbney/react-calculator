@@ -17,71 +17,71 @@ class App extends Component {
 		this.handleClear = this.handleClear.bind(this);
 		this.handleSolarMouseOn = this.handleSolarMouseOn.bind(this);
 		this.handleSolarMouseOff = this.handleSolarMouseOff.bind(this);
+		this.setDisplay = this.setDisplay.bind(this);
+		this.setInput = this.setInput.bind(this);
 	}
 
-
-
-	handleNumberInput(val){
+	setDisplay(val){
 		const decimalRegex = /\./;
 		const hasDecimal = decimalRegex.test(this.state.display);
-		const operatorRegex = /[\+\-\*\/]$/;
+		const operatorRegex = /[\+ \- \* \/ ]$/;
 		const endsInOperator = operatorRegex.test(this.state.input);
-		this.setState({
-			display: endsInOperator ? 
-				val 
-				: 
-				this.state.display === "0" ?
-					val 
-					: 
-					val !== "." ? 
-						this.state.display + val
-			        	:
-			        	hasDecimal ?
-			        		this.state.display
-			        		: 
-			        		this.state.display + val,
+			if (endsInOperator || this.state.display === "0"){
+					 return val;
+					 }
+					 else if(val !== "." || hasDecimal){
+						return this.state.display + val;
+					 }
+					 else {return this.state.display}
+			}
 
-			input: this.state.input === "" ?
-				 val 
-				 : 
-				 val !== "." ?
-				 	this.state.input + val
-			        : 
-			        !hasDecimal ?
-			        	this.state.input + val
-			        	:
-			        	endsInOperator ?
-			        		this.state.input + val
-			        		:
-			        		this.state.input
-			        	
-			        	
+	setInput(val){
+		const decimalRegex = /\./;
+		const hasDecimal = decimalRegex.test(this.state.display);
+		const operatorRegex = /[\+ \- \* \/ ]$/;
+		const endsInOperator = operatorRegex.test(this.state.input);
+
+		if (this.state.input === ""){
+			return val;
+		} 
+		else if (val !== "." || !hasDecimal || endsInOperator){
+			return this.state.input + val;
+		}
+		else {return this.state.input;}
+	}
+
+	handleNumberInput(val){
+		this.setState({
+			display: this.setDisplay(val),
+			input: this.setInput(val)
 		})
 	}
 
 	handleOperatorInput(val){
-		const operatorRegex = /[\+\-\*\/\.]$/;
-		const beforeOperatorRegex = /[\d]/;
-		const beforeendsInOperator = beforeOperatorRegex.test(this.state.input);
+		const operatorRegex = /[\+ \- \* \/ \. ]$/;
+		const numRegex = /[\d]/;
+		const previousCharIsNum = numRegex.test(this.state.input);
 		const endsInOperator = operatorRegex.test(this.state.input);
 		function evil(fn) {
   			return new Function('return ' + fn)();
 		};
 
-		val === "=" ?
-			endsInOperator ?
-				!beforeendsInOperator ?
-					this.setState({input: "", display:"0"})
-					:
-		        	this.setState({input: (Math.round(evil(this.state.input.slice(0, -1))*1000000)/1000000).toString(),
-		        	       display: (Math.round(evil(this.state.input.slice(0, -1))*1000000)/1000000).toString()})
-		        :this.setState({display: (Math.round(evil(this.state.input)*1000000)/1000000).toString(), input: (Math.round(evil(this.state.input)*1000000)/1000000).toString()}) 
-		:endsInOperator ?
-		    this.setState({input: this.state.input.slice(0,-1).concat(val)})
-			:
-			this.setState({ input: this.state.input + val});
-			
-		
+		if (val === "="){
+			if(!endsInOperator){
+				this.setState({display: (Math.round(evil(this.state.input) * 1000000) / 1000000).toString(),
+		                input: (Math.round(evil(this.state.input) * 1000000) / 1000000).toString()})
+			} else if (previousCharIsNum) {
+				this.setState({input: (Math.round(evil(this.state.input.slice(0, -1)) * 1000000) / 1000000).toString(),
+		        	       display: (Math.round(evil(this.state.input.slice(0, -1)) * 1000000) / 1000000).toString()})
+			} else {this.setState({input: "", display: "0"})}
+		}
+
+		else {
+			if (endsInOperator){
+				this.setState({input: this.state.input.slice(0, -1).concat(val)})
+			}
+			else{this.setState({input: this.state.input + val})}
+		}			
 	}
 
 	handleClear(){
