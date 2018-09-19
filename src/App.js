@@ -21,11 +21,11 @@ class App extends Component {
 
 	handleNumberInput(val){
 		const decimalRegex = /\./;
-		const decimalCheck = decimalRegex.test(this.state.display);
+		const hasDecimal = decimalRegex.test(this.state.display);
 		const operatorRegex = /[\+\-\*\/]$/;
-		const operatorCheck = operatorRegex.test(this.state.input);
+		const endsInOperator = operatorRegex.test(this.state.input);
 		this.setState({
-			display: operatorCheck ? 
+			display: endsInOperator ? 
 				val 
 				: 
 				this.state.display === "0" ?
@@ -34,7 +34,7 @@ class App extends Component {
 					val !== "." ? 
 						this.state.display + val
 			        	:
-			        	decimalCheck ?
+			        	hasDecimal ?
 			        		this.state.display
 			        		: 
 			        		this.state.display + val,
@@ -45,10 +45,10 @@ class App extends Component {
 				 val !== "." ?
 				 	this.state.input + val
 			        : 
-			        !decimalCheck ?
+			        !hasDecimal ?
 			        	this.state.input + val
 			        	:
-			        	operatorCheck ?
+			        	endsInOperator ?
 			        		this.state.input + val
 			        		:
 			        		this.state.input
@@ -60,18 +60,21 @@ class App extends Component {
 	handleOperatorInput(val){
 		const operatorRegex = /[\+\-\*\/\.]$/;
 		const beforeOperatorRegex = /[\d]/;
-		const beforeOperatorCheck = beforeOperatorRegex.test(this.state.input);
-		const operatorCheck = operatorRegex.test(this.state.input);
+		const beforeendsInOperator = beforeOperatorRegex.test(this.state.input);
+		const endsInOperator = operatorRegex.test(this.state.input);
+		function evil(fn) {
+  			return new Function('return ' + fn)();
+		};
 
 		val === "=" ?
-			operatorCheck ?
-				!beforeOperatorCheck ?
+			endsInOperator ?
+				!beforeendsInOperator ?
 					this.setState({input: "", display:"0"})
 					:
-		        	this.setState({input: (Math.round(eval(this.state.input.slice(0, -1))*1000000)/1000000).toString(),
-		        	       display: (Math.round(eval(this.state.input.slice(0, -1))*1000000)/1000000).toString()})
-		        :this.setState({display: (Math.round(eval(this.state.input)*1000000)/1000000).toString(), input: (Math.round(eval(this.state.input)*1000000)/1000000).toString()}) 
-		:operatorCheck ?
+		        	this.setState({input: (Math.round(evil(this.state.input.slice(0, -1))*1000000)/1000000).toString(),
+		        	       display: (Math.round(evil(this.state.input.slice(0, -1))*1000000)/1000000).toString()})
+		        :this.setState({display: (Math.round(evil(this.state.input)*1000000)/1000000).toString(), input: (Math.round(evil(this.state.input)*1000000)/1000000).toString()}) 
+		:endsInOperator ?
 		    this.setState({input: this.state.input.slice(0,-1).concat(val)})
 			:
 			this.setState({ input: this.state.input + val});
