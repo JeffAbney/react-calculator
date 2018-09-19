@@ -19,6 +19,8 @@ class App extends Component {
 		this.handleSolarMouseOff = this.handleSolarMouseOff.bind(this);
 	}
 
+
+
 	handleNumberInput(val){
 		const decimalRegex = /\./;
 		const hasDecimal = decimalRegex.test(this.state.display);
@@ -108,8 +110,8 @@ class App extends Component {
     return (
       <div className="App">
         <div className="calculator">
-        	<div className="solar-panel" id="solar-panel" onMouseOver={()=>this.handleSolarMouseOn()} 
-        	        onMouseOut={()=>this.handleSolarMouseOff()}>
+        	<div className="solar-panel" id="solar-panel" onMouseOver={this.handleSolarMouseOn} 
+        	        onMouseOut={this.handleSolarMouseOff}>
         	<div className="solar-panel-line">
         	</div>
         	<div className="solar-panel-line">
@@ -162,7 +164,7 @@ class App extends Component {
         	</div>
         	<div className="calc-button operator-button" id="equals" onClick={()=>this.handleOperatorInput("=")}>=
         	</div>
-        	<div className="calc-button clear-button" id="clear" onClick={()=>this.handleClear()}>C
+        	<div className="calc-button clear-button" id="clear" onClick={this.handleClear}>C
         	</div>
         </div>
       </div>
