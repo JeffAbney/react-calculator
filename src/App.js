@@ -3,17 +3,69 @@ import './App.css';
 
 const SolarPanel = (props) => {
 	    return (
-		    <div className="solar-panel" id="solar-panel" onMouseOver={props.mouseOver} onMouseOut={props.mouseOff}>
-              <div className="solar-panel-line" />
-              <div className="solar-panel-line" />
-              <div className="solar-panel-line" />
-              <div className="solar-panel-line" />
-              <div className="solar-panel-line" />
-            </div>
+		      <div className="solar-panel" id="solar-panel" onMouseOver={props.mouseOver} onMouseOut={props.mouseOff}>
+                <div className="solar-panel-line" />
+                <div className="solar-panel-line" />
+                <div className="solar-panel-line" />
+                <div className="solar-panel-line" />
+                <div className="solar-panel-line" />
+          </div>
 	    );
 };
 
+const Display = (props) => {
+  const displayClass = "display " + props.state.fade;
+  const inputClass = "input-display " + props.state.fade;
+	return (
+	  <div className="display-container">
+	    <div className={inputClass}>
+          <p>{props.state.input}</p>
+        </div>
+        <div className={displayClass} id="display">{props.state.display.length > 10 ? Number(props.state.display).toExponential(6) : props.state.display}
+        </div>
+        <div className="calc-button clear-button" id="clear" onClick={props.onClick}>C
+        </div>
+      </div>
+	)
+};
 
+const NumberPad = (props) => {
+	return (
+  <div className="number-pad">
+    <div className="calc-button number-button" id="seven" onClick={()=>props.handleNumberInput("7")} >7
+    </div>
+    <div className="calc-button number-button" id="eight" onClick={()=>props.handleNumberInput("8")} >8
+    </div>
+    <div className="calc-button number-button" id="nine" onClick={()=>props.handleNumberInput("9")} >9
+    </div>
+    <div className="calc-button number-button" id="four" onClick={()=>props.handleNumberInput("4")} >4
+    </div>
+    <div className="calc-button number-button" id="five" onClick={()=>props.handleNumberInput("5")} >5
+    </div>
+    <div className="calc-button number-button" id="six" onClick={()=>props.handleNumberInput("6")} >6
+    </div>
+    <div className="calc-button number-button" id="one" onClick={()=>props.handleNumberInput("1")} >1
+    </div>
+    <div className="calc-button number-button" id="two" onClick={()=>props.handleNumberInput("2")} >2
+    </div>
+    <div className="calc-button number-button" id="three" onClick={()=>props.handleNumberInput("3")} >3
+    </div>
+    <div className="calc-button number-button" id="zero" onClick={()=>props.handleNumberInput("0")} >0
+    </div>
+    <div className="calc-button number-button" id="decimal" onClick={()=>props.handleNumberInput(".")} >.
+    </div>
+    <div className="calc-button operator-button" id="add" onClick={()=>props.handleOperatorInput("+")}>+
+    </div>
+    <div className="calc-button operator-button" id="subtract" onClick={()=>props.handleOperatorInput("-")}>-
+    </div>
+    <div className="calc-button operator-button" id="multiply" onClick={()=>props.handleOperatorInput("*")}>*
+    </div>
+    <div className="calc-button operator-button" id="divide" onClick={()=>props.handleOperatorInput("/")}>/
+    </div>
+    <div className="calc-button operator-button" id="equals" onClick={()=>props.handleOperatorInput("=")}>=
+    </div>	
+  </div>
+)}
 
 /* ----------------------- Main App ------------------------- */
 class App extends Component {
@@ -124,57 +176,16 @@ class App extends Component {
 
     
     render() {
-      const displayClass = "display " + this.state.fade;
-      const inputClass = "input-display " + this.state.fade;
+
         return (
-          <div className="App">
-            <div className="calculator">
-              <SolarPanel mouseOver={this.handleSolarMouseOn} mouseOff={this.handleSolarMouseOff} />
-              <div className={inputClass}>
-                <p>{this.state.input}</p>
-              </div>
-              <div className={displayClass} id="display">
-                {this.state.display.length > 10 ?
-                    Number(this.state.display).toExponential(6) 
-                    :
-                    this.state.display}
-              </div>
-              <div className="calc-button number-button" id="seven" onClick={()=>this.handleNumberInput("7")} >7
-              </div>
-              <div className="calc-button number-button" id="eight" onClick={()=>this.handleNumberInput("8")} >8
-              </div>
-              <div className="calc-button number-button" id="nine" onClick={()=>this.handleNumberInput("9")} >9
-              </div>
-              <div className="calc-button number-button" id="four" onClick={()=>this.handleNumberInput("4")} >4
-              </div>
-              <div className="calc-button number-button" id="five" onClick={()=>this.handleNumberInput("5")} >5
-              </div>
-              <div className="calc-button number-button" id="six" onClick={()=>this.handleNumberInput("6")} >6
-              </div>
-              <div className="calc-button number-button" id="one" onClick={()=>this.handleNumberInput("1")} >1
-              </div>
-              <div className="calc-button number-button" id="two" onClick={()=>this.handleNumberInput("2")} >2
-              </div>
-              <div className="calc-button number-button" id="three" onClick={()=>this.handleNumberInput("3")} >3
-              </div>
-              <div className="calc-button number-button" id="zero" onClick={()=>this.handleNumberInput("0")} >0
-              </div>
-              <div className="calc-button number-button" id="decimal" onClick={()=>this.handleNumberInput(".")} >.
-              </div>
-              <div className="calc-button operator-button" id="add" onClick={()=>this.handleOperatorInput("+")}>+
-              </div>
-              <div className="calc-button operator-button" id="subtract" onClick={()=>this.handleOperatorInput("-")}>-
-              </div>
-              <div className="calc-button operator-button" id="multiply" onClick={()=>this.handleOperatorInput("*")}>*
-              </div>
-              <div className="calc-button operator-button" id="divide" onClick={()=>this.handleOperatorInput("/")}>/
-              </div>
-              <div className="calc-button operator-button" id="equals" onClick={()=>this.handleOperatorInput("=")}>=
-              </div>
-              <div className="calc-button clear-button" id="clear" onClick={this.handleClear}>C
+            <div className="App">
+              <div className="calculator">
+                <SolarPanel mouseOver={this.handleSolarMouseOn} mouseOff={this.handleSolarMouseOff} />
+                <Display state={this.state} onClick={this.handleClear}/>
+                <NumberPad state={this.state} handleNumberInput={(e)=>this.handleNumberInput(e)}
+                   handleOperatorInput={(e)=>this.handleOperatorInput(e)}/>
               </div>
             </div>
-          </div>
         );
     }
 }

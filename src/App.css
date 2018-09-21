@@ -20,12 +20,8 @@
 	display: grid;
 	grid-template:
 		". solar solar ." .5fr
-		"input input input input" 1fr
-		"display display display clear" 1.25fr
-		"seven eight nine add" 1fr
-		"four five six subt" 1fr
-		"one two three mult" 1fr
-		"zero dec equ div" 1fr
+		"discontainter discontainter discontainter discontainter" 2fr
+		"num num num num" 4fr
 		/ 1fr 1fr 1fr 1fr;
 
 	background-color: var(--blue);
@@ -51,6 +47,16 @@
 		border: 1px dotted darkgrey;
 	}
 
+	.display-container{
+		grid-area: discontainter;
+		display: grid;
+		grid-template:
+		"input input input input" 1.25fr
+		"display display display clear" 1fr
+		/1fr 1fr 1fr 1fr;
+		height: 100%;
+		width: 100%;
+	}
 	.input-display{
 		grid-area: input;
 		display: flex;
@@ -71,8 +77,23 @@
 		padding: 15px;
 		text-align: right;
 		max-width: 100%;
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
+		background-color: var(--purple);
+		font-size: 32px;
+		font-family: 'Exo', sans-serif;
 	}
-
+	.number-pad{
+		grid-area: num;
+		display: grid;
+		grid-template:
+		"seven eight nine add" 1fr
+		"four five six subt" 1fr
+		"one two three mult" 1fr
+		"zero dec equ div" 1fr
+		/1fr 1fr 1fr 1fr;
+	}
 	#seven{
 		grid-area: seven;
 	}
@@ -125,15 +146,6 @@
 		grid-area: clear;
 		background-color: var(--red);
 	}
-
-.display{
-	display: flex;
-	justify-content: flex-end;
-	align-items: center;
-	background-color: var(--purple);
-	font-size: 32px;
-	font-family: 'Exo', sans-serif;
-}
 
 .calc-button{
 	display: flex;
